@@ -50,7 +50,6 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
     implementation("io.ktor:ktor-server-netty")
     implementation("ch.qos.logback:logback-classic:$logback_version")
-    implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("io.ktor:ktor-client-cio")
     implementation("io.ktor:ktor-client-logging")
     implementation("io.ktor:ktor-client-call-id")

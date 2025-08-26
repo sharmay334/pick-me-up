@@ -30,8 +30,8 @@ fun Application.configureSecurity() {
                     authorizeUrl = "https://accounts.google.com/o/oauth2/auth",
                     accessTokenUrl = "https://accounts.google.com/o/oauth2/token",
                     requestMethod = HttpMethod.Post,
-                    clientId = "750050477438-m7cdvmc06omtcmseu6m1d7568j5oq6rc.apps.googleusercontent.com",
-                    clientSecret = "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",
+                    clientId = System.getenv("GOOGLE_CLIENT_ID"),
+                    clientSecret = System.getenv("GOOGLE_CLIENT_SECRET"),
                     defaultScopes = listOf("openid", "email", "profile")
                 )
             }
