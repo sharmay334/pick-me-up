@@ -21,6 +21,11 @@ import org.koin.core.component.inject
 import org.koin.java.KoinJavaComponent
 
 class RideServiceImpl : RideService, KoinComponent {
+    private var GOOGLE_MAPS_API_KEY: String? = null
+
+    init {
+        GOOGLE_MAPS_API_KEY = System.getenv("GOOGLE_MAPS_API_KEY")
+    }
     private val httpClient by KoinJavaComponent.inject<MapHttpClient>(MapHttpClient::class.java)
 
     private val collectionName = "rides"
@@ -96,10 +101,10 @@ class RideServiceImpl : RideService, KoinComponent {
     override suspend fun findRides(rideRequest: SearchRideRequest): List<PublishRideRequestDto> {
         val rides = getAllRideRequests(rideRequest)
         val records =  rides.filter { it.isRideRequestActive }
-        findNearbyRiders(Pair(rideRequest.source.lat,rideRequest.source.lng), Pair(rideRequest.destination.lat,rideRequest.destination.lng),riders = records,apiKey = "AIzaSyC6e4LPya_FZ0297z4H0ZBgnmUMzVd51eA")
-
+        findNearbyRiders(Pair(rideRequest.source.lat,rideRequest.source.lng), Pair(rideRequest.destination.lat,rideRequest.destination.lng),riders = records,apiKey = GOOGLE_MAPS_API_KEY?:"")
+        return emptyList()
     }
-    fun findNearbyRiders(requestedSource: Pair<Double, Double>,
+    suspend fun findNearbyRiders(requestedSource: Pair<Double, Double>,
                          requestedTarget: Pair<Double, Double>,
                          riders: List<PublishRideRequestDto>, apiKey: String): List<PublishRideRequestDto> {
         val nearbyRiders = mutableListOf<PublishRideRequestDto>()
@@ -133,13 +138,6 @@ class RideServiceImpl : RideService, KoinComponent {
                     parameter("apiKey",apiKey)
                 }
             }.body<JsonObject>()
-        val distance = response["rows"]
-            .asJsonArray[0]
-            .asJsonObject["elements"]
-            .asJsonArray[0]
-            .asJsonObject["distance"]
-            .asJsonObject["value"]
-            .asInt
         print("data is ${response}")
         return 1
     }

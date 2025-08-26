@@ -10,7 +10,10 @@ import java.net.URLEncoder
 
 class SearchServiceImpl : SearchService {
     companion object {
-        private const val GOOGLE_MAPS_API_KEY = "AIzaSyC6e4LPya_FZ0297z4H0ZBgnmUMzVd51eA"
+        private var GOOGLE_MAPS_API_KEY: String? = null
+        init {
+            GOOGLE_MAPS_API_KEY = System.getenv("GOOGLE_MAPS_API_KEY") ?: GOOGLE_MAPS_API_KEY
+        }
         private const val BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
         private const val COUNTRY = "in"
     }
