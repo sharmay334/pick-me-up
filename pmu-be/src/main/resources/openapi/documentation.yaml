@@ -1,23 +1,221 @@
-openapi: "3.0.3"
+openapi: 3.0.0
 info:
-  title: "Application API"
-  description: "Application API"
-  version: "1.0.0"
+  title: Login API
+  version: 1.0.0
 servers:
-  - url: "http://0.0.0.0:8080"
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/sharmay334organizati/pickMeUp/1.0.0
+  - url: http://localhost:8081
 paths:
-  /:
+  /api/v1/login:
     get:
-      description: "Hello World!"
+      summary: Login and get user profile
       responses:
-        "200":
-          description: "OK"
+        '200':
+          description: Successful login response
           content:
-            text/plain:
+            application/json:
               schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Hello World!"
-components:
-  schemas: { }
+                type: object
+                properties:
+                  completeName:
+                    type: string
+                    example: Zyply Rides
+                  firstName:
+                    type: string
+                    example: Zyply
+                  lastName:
+                    type: string
+                    example: Rides
+                  pictureUrl:
+                    type: string
+                    format: uri
+                    example: https://lh3.googleusercontent.com/a/ACg8ocJEkD90vm0pD-fMf30Euzq-CHvYOpB61LgwpZ8dpm1MUIgMsw=s96-c
+                  email:
+                    type: string
+                    format: email
+                    example: zyply.rides@gmail.com
+                  phoneNumber:
+                    type: string
+                    nullable: true
+                    example: null
+  /api/v1/autocomplete:
+    get:
+      summary: Get address suggestions for a keyword
+      parameters:
+        - name: keyword
+          in: query
+          required: true
+          schema:
+            type: string
+          example: one horizon
+      responses:
+        '200':
+          description: List of address suggestions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  suggestions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        address:
+                          type: string
+                          example: One Horizon Center, Bus Stand (Speedy Group), Golf Course Road, Harizan Colony, Tigra, Sector 62, Gurugram, Haryana, India
+  /api/v1/signup:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: Trial
+                lastName:
+                  type: string
+                  example: Test
+                email:
+                  type: string
+                  format: email
+                  example: test111@gmail.com
+                phoneNumber:
+                  type: string
+                  example: 8787878787
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: string
+                example: User registered successfully
+  /api/v1/send/otp:
+    post:
+      summary: Send OTP to a phone number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phoneNumber:
+                  type: string
+                  example: 6377332492
+      responses:
+        '200':
+          description: OTP sent successfully
+  /api/v1/verify/otp:
+    post:
+      summary: Verify OTP for a phone number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phoneNumber:
+                  type: string
+                  example: 6377332492
+                otpCode:
+                  type: string
+                  example: 222211
+      responses:
+        '200':
+          description: OTP verified successfully
+        '424':
+          description: Invalid OTP
+  /api/v1/create/ride:
+    post:
+      summary: Create a new ride
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  example: user_001
+                rideId:
+                  type: integer
+                  example: 101
+                source:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Start Point
+                    address:
+                      type: string
+                      example: 123 Main St, City, Country
+                    location:
+                      type: object
+                      properties:
+                        lat:
+                          type: number
+                          format: double
+                          example: 28.6139
+                        lng:
+                          type: number
+                          format: double
+                          example: 77.2090
+                destination:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: End Point
+                    address:
+                      type: string
+                      example: 456 Market St, City, Country
+                    location:
+                      type: object
+                      properties:
+                        lat:
+                          type: number
+                          format: double
+                          example: 28.7041
+                        lng:
+                          type: number
+                          format: double
+                          example: 77.1025
+                publishDate:
+                  type: string
+                  example: 2024-06-10
+                publishTime:
+                  type: string
+                  example: 09:30
+                noOfPassengers:
+                  type: integer
+                  example: 3
+                createdAt:
+                  type: string
+                  format: date-time
+                  example: 2024-06-09T12:00:00Z
+                modifierAt:
+                  type: string
+                  format: date-time
+                  example: 2024-06-09T12:00:00Z
+                isRideRequestActive:
+                  type: boolean
+                  example: true
+                isRideCompleted:
+                  type: boolean
+                  example: false
+                pathPolyline:
+                  type: string
+                  example: encodedPolylineString
+      responses:
+        '201':
+          description: Ride created successfully

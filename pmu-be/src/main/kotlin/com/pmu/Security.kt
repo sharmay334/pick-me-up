@@ -23,7 +23,7 @@ fun Application.configureSecurity() {
     val rideService by inject<RideService>(RideService::class.java)
     authentication {
         oauth("auth-oauth-google") {
-            urlProvider = { "http://localhost:8080/callback" }
+            urlProvider = { "http://localhost:8081/callback" }
             providerLookup = {
                 OAuthServerSettings.OAuth2ServerSettings(
                     name = "google",
@@ -50,7 +50,7 @@ fun Application.configureSecurity() {
     }*/
     routing {
         authenticate("auth-oauth-google") {
-            get("login") {
+            get("/api/v1/login") {
                 call.respondRedirect("/callback")
             }
 
@@ -62,26 +62,30 @@ fun Application.configureSecurity() {
                 )
             }
         }
-        route("api/v1") {
+        route("/api/v1") {
             post("/signup") {
                 val userRequest = call.receive<UserRegistrationRequest>()
                 call.respond(status = HttpStatusCode.Created, message = authService.signUp(userRequest) as String)
             }
-            post("/verify/phone"){
+            post("/send/otp"){
                 val request = call.receive<UserPhoneVerificationRequest>()
                 call.respond(status = HttpStatusCode.OK, message = authService.generateOTP(request.phoneNumber))
             }
-            post("/publish/phone/check"){}
+            post("/verify/otp"){
+                val request = call.receive<UserPhoneVerificationRequest>()
+                call.respond(status = HttpStatusCode.OK, message = authService.validateOTP(request))
+            }
+            post("/ride/create") {
+                val rideRequest = call.receive<PublishRideRequestDto>()
+                call.respond(status = HttpStatusCode.OK, message =rideService.createRideRequest(rideRequest))
+            }
+            post("/ride/find") {
+                val rideRequest = call.receive<SearchRideRequest>()
+                call.respond(status = HttpStatusCode.OK, message =rideService.findRides(rideRequest))
+            }
         }
         post("/ride/search") {}
-        post("/ride/create") {
-            val rideRequest = call.receive<PublishRideRequestDto>()
-            call.respond(status = HttpStatusCode.OK, message =rideService.createRideRequest(rideRequest))
-        }
-        post("/ride/find") {
-            val rideRequest = call.receive<SearchRideRequest>()
 
-        }
         post("/ride/update") {}
         post("/ride/delete") {}
         post("/user/me") {}

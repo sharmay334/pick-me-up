@@ -8,5 +8,6 @@ data class UserRegistrationRequest(
 )
 
 data class UserPhoneVerificationRequest(
-    val phoneNumber: String
+    val phoneNumber: String,
+    val otpCode: String?=""
 )

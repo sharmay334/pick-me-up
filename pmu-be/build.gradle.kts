@@ -8,14 +8,15 @@ plugins {
     id("io.ktor.plugin") version "3.2.3"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
 }
+repositories{
+    mavenCentral()
+}
 
 application {
     mainClass.set("com.pmu.ApplicationKt")
 }
-ktor {
-    fatJar {
-        archiveFileName.set("pickMeUp_fat.jar")
-    }
+tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+    mergeServiceFiles()
 }
 
 dependencies {
@@ -56,6 +57,9 @@ dependencies {
     implementation("io.ktor:ktor-server-config-yaml")
     implementation("io.ktor:ktor-client-content-negotiation")
     implementation("io.dapr:dapr-sdk:1.15.0") // core SDK
+    implementation("io.grpc:grpc-netty-shaded:1.56.0")
+    implementation("io.grpc:grpc-stub:1.56.0")
+    implementation("io.grpc:grpc-protobuf:1.56.0")
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

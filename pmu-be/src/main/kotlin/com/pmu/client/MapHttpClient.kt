@@ -26,6 +26,7 @@ class MapHttpClient{
             install(ContentNegotiation){
                 jackson {
                     configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES,false)
                 }
             }
             install(CallId){

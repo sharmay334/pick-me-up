@@ -39,29 +39,5 @@ fun Application.configureHTTP() {
     install(HSTS) {
         includeSubDomains = true
     }
-    routing {
-        openAPI(path = "openapi")
-    }
-    install(SimpleCache) {
-        redisCache {
-            invalidateAt = 10.seconds
-            host = "localhost"
-            port = 6379
-        }
-    }
-    routing {
-        swaggerUI(path = "openapi")
-    }
-    routing {
-        cacheOutput(2.seconds) {
-            get("/short") {
-                call.respond(Random.nextInt().toString())
-            }
-        }
-        cacheOutput {
-            get("/default") {
-                call.respond(Random.nextInt().toString())
-            }
-        }
-    }
+
 }
