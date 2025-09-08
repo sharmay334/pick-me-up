@@ -9,7 +9,6 @@ import io.ktor.server.application.ApplicationStopping
 object DaprProvider {
     val client: DaprClient by lazy {
         DaprClientBuilder()
-            // You can override defaults: sidecar address, serializer, etc.
             .build()
     }
 }

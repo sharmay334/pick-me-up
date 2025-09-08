@@ -15,6 +15,7 @@ data class PublishRideRequestDto(
     val modifierAt:String,
     val isRideRequestActive:Boolean = true,
     val isRideCompleted:Boolean = false,
+    val pathPolyline:String? = null
 )
 data class SourceDetail(
     val name:String,
@@ -22,8 +23,8 @@ data class SourceDetail(
     val location:Location
 )
 data class Location(
-    val lat:Double,
-    val lng:Double
+    val lat: Number,
+    val lng: Number
 )
 
 
@@ -31,4 +32,5 @@ data class SearchRideRequest(
     val source: Location,
     val destination:Location,
     val date:String,
+    val polyline:String
 )

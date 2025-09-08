@@ -1,0 +1,18 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: statestore   # the name you will reference in your app
+spec:
+  type: state.redis
+  version: v1
+  metadata:
+    - name: redisHost
+      value: "redis-14281.c251.east-us-mz.azure.redns.redis-cloud.com:14281"
+    - name: redisPassword
+      value: "LP1UbXZHpmedORiSYxFi54i03IGdjcm1"    # set password if your Redis requires auth
+    - name: enableTLS
+      value: "false"
+    - name: ttlInSeconds
+      value: 300
+scopes:
+  - pmu-be   # optional: limit to specific app-id

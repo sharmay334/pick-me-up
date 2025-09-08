@@ -10,6 +10,7 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+    configureDapr()
     configureFrameworks()
     configureHTTP()
     configureSecurity()
@@ -17,5 +18,5 @@ fun Application.module() {
     configureSerialization()
     configureRouting()
     configureSearchRouting()
-    configureDapr()
+
 }

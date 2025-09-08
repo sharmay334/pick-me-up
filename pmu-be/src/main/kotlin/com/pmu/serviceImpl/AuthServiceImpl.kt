@@ -5,6 +5,7 @@ import com.pmu.client.MongoClient
 import com.pmu.client.RedisClient
 import com.pmu.model.dto.OTPRequestDTO
 import com.pmu.model.dto.UserAuthSessionResponseDto
+import com.pmu.model.dto.UserPhoneVerificationRequest
 import com.pmu.model.dto.UserRegistrationRequest
 import com.pmu.service.AuthService
 import com.pmu.util.Utility
@@ -45,6 +46,15 @@ class AuthServiceImpl: AuthService {
 
     override suspend fun generateOTP(phoneNumber: String) {
         sendOTPMessage(phoneNumber)
+    }
+
+    override suspend fun validateOTP(request: UserPhoneVerificationRequest):String {
+       if(request.otpCode != RedisClient.get("otp_${request.phoneNumber}")){
+           throw Exception("Invalid OTP")
+       }
+        else
+            RedisClient.delete("otp_${request.phoneNumber}")
+        return "OK"
     }
 
     fun pushUserRecord(userAuth: UserAuthSessionResponseDto): Boolean{

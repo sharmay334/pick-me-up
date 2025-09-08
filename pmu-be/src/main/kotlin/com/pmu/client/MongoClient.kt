@@ -6,7 +6,7 @@ import com.mongodb.client.MongoCollection
 import org.bson.Document
 import org.litote.kmongo.KMongo
 
-class MongoClient(private val connectionString: String) {
+class MongoClient(connectionString: String) {
     private val client: MongoDBClient = MongoClients.create(connectionString)
     private val database = client.getDatabase("pick-me-up")
 
